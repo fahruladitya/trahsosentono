@@ -688,52 +688,7 @@ function toast(msg){
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY, SHEETS_SYNC_URL } from './config.js';
 
-const API = SUPABASE_URL + '/rest/v1';
-const HEADERS = {
-  'apikey': SUPABASE_ANON_KEY,
-  'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-  'Content-Type': 'application/json',
-  'Prefer': 'return=representation'
-};
-
-// Ambil semua anggota
-async function fetchMembers() {
-  const res = await fetch(`${API}/members?select=*&order=gen,id`, { headers: HEADERS });
-  return res.json();
-}
-
-// Tambah anggota
-async function insertMember(data) {
-  const res = await fetch(`${API}/members`, {
-    method: 'POST', headers: HEADERS, body: JSON.stringify(data)
-  });
-  return res.json();
-}
-
-// Hapus anggota
-async function deleteMember(id) {
-  await fetch(`${API}/members?id=eq.${id}`, { method: 'DELETE', headers: HEADERS });
-}
-
-// Tambah agenda
-async function insertAgenda(data) {
-  const res = await fetch(`${API}/agendas`, {
-    method: 'POST', headers: HEADERS, body: JSON.stringify(data)
-  });
-  return res.json();
-}
-
-// Hapus agenda
-async function deleteAgenda(id) {
-  await fetch(`${API}/agendas?id=eq.${id}`, { method: 'DELETE', headers: HEADERS });
-}
-
-// Sync ke Google Sheets (panggil setelah ada perubahan data)
-async function syncToSheets() {
-  try { await fetch(SHEETS_SYNC_URL); } catch(e) {}
-}
   
 // INIT
 updateStats();
